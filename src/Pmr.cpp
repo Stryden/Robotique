@@ -25,28 +25,27 @@ void
 Pmr::generate_graph()
 {
 	std::vector<ArLineSegment>* lines;
-	std::vector<ArPose> points;
 	ArPose point;
 
-	points.push_back(start_);
+	points_.push_back(start_);
 	lines = map_->getLines();
 
 	for (int i = 0; i < n_ - 2; ++i)
 	{
 		point = random_point(lines);
-		points.push_back(point);
+		points_.push_back(point);
 	}
-	points.push_back(finish_);
+	points_.push_back(finish_);
 
-	compute_distance(points, lines);
+	compute_distance(lines);
 }
 
 void
-Pmr::compute_distance(std::vector<ArPose> points, std::vector<ArLineSegment>* obs)
+Pmr::compute_distance(std::vector<ArLineSegment>* obs)
 {
 	ArLineSegment segment;
 	ArPose useless;
-	int l = points.size();
+	int l = points_.size();
 
 	for (int i = 0; i < l; ++i)
 		for (int j = 0; j < l; ++j)
@@ -54,9 +53,9 @@ Pmr::compute_distance(std::vector<ArPose> points, std::vector<ArLineSegment>* ob
 			{
 				if (i != j)
 				{
-					segment = ArLineSegment(points[i], points[j]);
+					segment = ArLineSegment(points_[i], points_[j]);
 					if (segment.intersects(&o, &useless))
-						graph_[i][j] = ArPose::distanceBetween(points[i], points[j]);
+						graph_[i][j] = ArPose::distanceBetween(points_[i], points_[j]);
 				}
 			}
 }
