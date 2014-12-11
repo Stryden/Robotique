@@ -1,4 +1,5 @@
 #include "Aria.h"
+#include "Pmr.h"
 
 ArActionGroup *wander;
 
@@ -9,6 +10,20 @@ void wanderMode(void)
 
 int main(int argc, char** argv)
 {
+	if (argc != 5)
+	{
+		printf("Error\n");
+		return 3;
+	}
+
+	ArMap map;
+
+	if (!map.readFile(argv[1]))
+	{
+		printf("Error Map\n");
+		return 4;
+	}
+
 	// the connection
 	ArSimpleConnector con(&argc, argv);
 	if (!con.parseArgs())
@@ -31,8 +46,13 @@ int main(int argc, char** argv)
 	printf("Connected to the robot. (Press Ctrl-C to exit)\n");
 
 	Aria::init();
-	ArPose end = ArPose(-2000, -2000);
-
+	ArPose start = robot.getPose();
+	ArPose end = ArPose(atoi(argv[2]), atoi(argv[3]));
+	
+	printf("Compute graph...\n");
+	Pmr pmr = Pmr(&map, start, end, atoi(argv[4]));
+	printf("end\n");
+	
 	/* - the action group for wander actions: */
 	wander = new ArActionGroup(&robot);
 	// if we're stalled we want to back up and recover

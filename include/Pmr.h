@@ -3,6 +3,7 @@
 #include <cstdlib>
 
 
+typedef std::vector<std::vector<int>> arry;
 class Pmr {
 public:
 	Pmr();
@@ -15,13 +16,13 @@ private:
 	ArPose finish_;
 	
 	int n_;
-	double** graph_;
+	arry graph_;
 
 
 	void generate_graph();
 	void compute_distance(std::vector<ArPose> points, std::vector<ArLineSegment> *obs);
 	ArPose random_point(std::vector<ArLineSegment>* lines);
 
-	double** get_graph();
+	arry get_graph();
 public:
 };

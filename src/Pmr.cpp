@@ -1,14 +1,20 @@
 #include "Pmr.h"
 
 Pmr::Pmr()
-: map_(NULL), start_(), finish_(), n_(0)
+: map_(NULL), start_(), finish_(), n_(0), graph_(NULL)
 {
 }
 
 Pmr::Pmr(ArMap* map, ArPose start, ArPose finish, int n)
 : map_(map), start_(start), finish_(finish), n_(n)
 {	
+	std::vector<int> tmp(n, 0);
+	graph_ = arry(n, tmp);
+	
 	generate_graph();
+	/*for (auto a : graph_)
+	for (auto b : a)
+		printf("%d\n", b);*/
 }
 
 Pmr::~Pmr()
@@ -22,15 +28,10 @@ Pmr::generate_graph()
 	std::vector<ArPose> points;
 	ArPose point;
 
-	*graph_ = new double[n_];
-	for (int i = 0; i < n_; ++i)
-		graph_[i] = new double[n_]();
-
-
 	points.push_back(start_);
 	lines = map_->getLines();
 
-	for (int i = 0; i < 5000; ++i)
+	for (int i = 0; i < n_ - 2; ++i)
 	{
 		point = random_point(lines);
 		points.push_back(point);
@@ -44,17 +45,20 @@ void
 Pmr::compute_distance(std::vector<ArPose> points, std::vector<ArLineSegment>* obs)
 {
 	ArLineSegment segment;
+	ArPose useless;
 	int l = points.size();
 
 	for (int i = 0; i < l; ++i)
-		for (int j = 0; j < l; ++i)
+		for (int j = 0; j < l; ++j)
 			for (auto o : *obs)
 			{
-				segment = ArLineSegment(points[i], points[i]);
-
-				if (segment.intersects(&o, NULL))
-					graph_[i][j] = ArPose::distanceBetween(points[i], points[j]);
-	}
+				if (i != j)
+				{
+					segment = ArLineSegment(points[i], points[j]);
+					if (segment.intersects(&o, &useless))
+						graph_[i][j] = ArPose::distanceBetween(points[i], points[j]);
+				}
+			}
 }
 
 ArPose
@@ -85,7 +89,7 @@ Pmr::random_point(std::vector<ArLineSegment>* lines)
 	return point;
 }
 
-double **
+arry
 Pmr::get_graph()
 {
 	return graph_;
