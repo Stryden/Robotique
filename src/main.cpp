@@ -1,5 +1,6 @@
 #include "Aria.h"
 #include "Pmr.h"
+#include "FollowPath.h"
 
 ArActionGroup *wander;
 
@@ -46,11 +47,14 @@ int main(int argc, char** argv)
 	printf("Connected to the robot. (Press Ctrl-C to exit)\n");
 
 	Aria::init();
-	ArPose start = robot.getPose();
+	ArPose curPose = robot.getPose();
 	ArPose end = ArPose(atoi(argv[2]), atoi(argv[3]));
 	
 	printf("Compute graph...\n");
-	Pmr pmr = Pmr(&map, start, end, atoi(argv[4]));
+	Pmr pmr = Pmr(&map, curPose, end, atoi(argv[4]));
+	//FIXME 
+	std::stack<ArPose> path;
+	//
 	printf("end\n");
 	
 	/* - the action group for wander actions: */
@@ -63,11 +67,24 @@ int main(int argc, char** argv)
 	wander->addAction(new ArActionAvoidFront("Avoid Front Near", 225, 0), 50);
 	// turn avoid things further away
 	wander->addAction(new ArActionAvoidFront, 45);
-	// keep moving
-	wander->addAction(new ArActionGoto("Goto", end, 20, 400), 25);
+	// moving to the next point
+	ArActionGoto* gotoo = new ArActionGoto("Goto", path.top(), 20, 400);
+	path.pop();
+	wander->addAction(gotoo, 25);
 
-	robot.enableMotors();
 	wanderMode();
-	robot.run(true);
+	robot.enableMotors();
+	robot.runAsync(true);
+
+	while (Aria::getRunning && !gotoo->haveAchievedGoal() && !path.empty())
+	{
+		if (gotoo->haveAchievedGoal() && !path.empty())
+		{
+			gotoo->setGoal(path.top());
+			path.pop();
+		}
+
+	}
+	while (!gotoo->haveAchievedGoal()) {}
 	Aria::exit(0);
 }

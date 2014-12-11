@@ -55,7 +55,7 @@ Pmr::compute_distance(std::vector<ArLineSegment>* obs)
 				{
 					segment = ArLineSegment(points_[i], points_[j]);
 					if (segment.intersects(&o, &useless))
-						graph_[i][j] = ArPose::distanceBetween(points_[i], points_[j]);
+						graph_[i][j] = points_[i].findDistanceTo(points_[j]);
 				}
 			}
 }

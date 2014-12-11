@@ -1,6 +1,7 @@
 #include "Aria.h"
 
 #include <cstdlib>
+#include <stack>
 
 
 typedef std::vector<std::vector<int>> arry;
@@ -16,11 +17,12 @@ private:
 	ArPose finish_;
 	
 	int n_;
+	std::vector<ArPose> points_;
 	arry graph_;
 
 
 	void generate_graph();
-	void compute_distance(std::vector<ArPose> points, std::vector<ArLineSegment> *obs);
+	void compute_distance(std::vector<ArLineSegment> *obs);
 	ArPose random_point(std::vector<ArLineSegment>* lines);
 
 	arry get_graph();
