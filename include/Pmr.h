@@ -1,24 +1,27 @@
 #include "Aria.h"
-#include "Node.h"
 
 #include <cstdlib>
 
 
 class Pmr {
 public:
-	Pmr(ArMap* map, ArPose& start, ArPose& finish);
+	Pmr();
+	Pmr(ArMap* map, ArPose start, ArPose finish, int n);
 	~Pmr();
 
 private:
 	ArMap* map_;
-	ArPose& start_;
-	ArPose& finish_;
-	std::vector<ArPose> points_;
-	Node graph_;
+	ArPose start_;
+	ArPose finish_;
+	
+	int n_;
+	double** graph_;
+
 
 	void generate_graph();
+	void compute_distance(std::vector<ArPose> points, std::vector<ArLineSegment> *obs);
 	ArPose random_point(std::vector<ArLineSegment>* lines);
 
-	Node& get_graph();
+	double** get_graph();
 public:
 };
