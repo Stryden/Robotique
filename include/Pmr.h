@@ -19,12 +19,14 @@ private:
 	int n_;
 	std::vector<ArPose> points_;
 	arry graph_;
+	std::stack<int> path_;
 
 
 	void generate_graph();
 	void compute_distance(std::vector<ArLineSegment> *obs);
 	ArPose random_point(std::vector<ArLineSegment>* lines);
 
-	arry get_graph();
 public:
+	std::stack<int> get_path();
+	std::vector<ArPose> get_points();
 };

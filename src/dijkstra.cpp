@@ -56,23 +56,23 @@ unsigned int dijkstra(unsigned int g[NB_NODES * NB_NODES], unsigned int start, u
 }
 
 
-int _tmain(int argc, _TCHAR* argv[])
-{
-	/* Initialization of g */
-	unsigned int g[NB_NODES * NB_NODES] = { 0 };
-	std::srand(std::time(0));
-	for (unsigned int i = 0; i < 2 * NB_NODES; ++i) {
-		unsigned int val = std::rand() % 150;
-		g[std::rand() % (NB_NODES * NB_NODES)] = val;
-	}
-
-	std::stack<unsigned int> path;
-	unsigned int length = dijkstra(g, 0, NB_NODES - 1, path);
-	unsigned int node;
-	std::cout << "Path found : " << std::endl;
-	while (path.size()) {
-		std::cout << "* " << path.top() << std::endl;
-		path.pop();
-	}
-	return 0;
-}
+//int _tmain(int argc, _TCHAR* argv[])
+//{
+//	/* Initialization of g */
+//	unsigned int g[NB_NODES * NB_NODES] = { 0 };
+//	std::srand(std::time(0));
+//	for (unsigned int i = 0; i < 2 * NB_NODES; ++i) {
+//		unsigned int val = std::rand() % 150;
+//		g[std::rand() % (NB_NODES * NB_NODES)] = val;
+//	}
+//
+//	std::stack<unsigned int> path;
+//	unsigned int length = dijkstra(g, 0, NB_NODES - 1, path);
+//	unsigned int node;
+//	std::cout << "Path found : " << std::endl;
+//	while (path.size()) {
+//		std::cout << "* " << path.top() << std::endl;
+//		path.pop();
+//	}
+//	return 0;
+//}

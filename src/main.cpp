@@ -52,11 +52,10 @@ int main(int argc, char** argv)
 	
 	printf("Compute graph...\n");
 	Pmr pmr = Pmr(&map, curPose, end, atoi(argv[4]));
-	//FIXME 
-	std::stack<ArPose> path;
-	//
+	std::stack<int> path = pmr.get_path();
+	std::vector<ArPose> points = pmr.get_points();
 	printf("end\n");
-	
+
 	/* - the action group for wander actions: */
 	wander = new ArActionGroup(&robot);
 	// if we're stalled we want to back up and recover
@@ -68,7 +67,7 @@ int main(int argc, char** argv)
 	// turn avoid things further away
 	wander->addAction(new ArActionAvoidFront, 45);
 	// moving to the next point
-	ArActionGoto* gotoo = new ArActionGoto("Goto", path.top(), 20, 400);
+	ArActionGoto* gotoo = new ArActionGoto("Goto", points[path.top()], 20, 400);
 	path.pop();
 	wander->addAction(gotoo, 25);
 
@@ -78,9 +77,9 @@ int main(int argc, char** argv)
 
 	while (Aria::getRunning && !gotoo->haveAchievedGoal() && !path.empty())
 	{
-		if (gotoo->haveAchievedGoal() && !path.empty())
+		if (gotoo->haveAchievedGoal())
 		{
-			gotoo->setGoal(path.top());
+			gotoo->setGoal(points[path.top()]);
 			path.pop();
 		}
 
