@@ -25,14 +25,12 @@ private:
 	int n_;
 	std::vector<ArPose> points_;
 	arry graph_;
+	std::stack<double> path_;
 
 
 	void generate_graph();
 	void compute_distance(std::vector<ArLineSegment> *obs);
 	ArPose random_point(std::vector<ArLineSegment>* lines);
-
-	arry get_graph();
-public:
 };
 
 #endif // PMR_H_

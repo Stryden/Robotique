@@ -12,9 +12,6 @@ Pmr::Pmr(ArMap* map, ArPose start, ArPose finish, int n)
 	graph_ = arry(n, tmp);
 	
 	generate_graph();
-	/*for (auto a : graph_)
-	for (auto b : a)
-		printf("%d\n", b);*/
 }
 
 Pmr::~Pmr()
@@ -99,10 +96,4 @@ Pmr::random_point(std::vector<ArLineSegment>* lines)
 	}
 
 	return point;
-}
-
-arry
-Pmr::get_graph()
-{
-	return graph_;
 }

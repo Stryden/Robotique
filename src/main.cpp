@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 	
 	printf("Compute graph...\n");
 	Pmr pmr = Pmr(&map, curPose, end, atoi(argv[4]));
-	//FIXME 
+
 	std::queue<ArPose> path;
 	pmr.getPath(path);
 	printf("end\n");
@@ -69,6 +69,7 @@ int main(int argc, char** argv)
 	wander->addAction(new ArActionAvoidFront, 45);
 	// moving to the next point
 	ArActionGoto* gotoo = new ArActionGoto("Goto", path.front(), 20, 400);
+
 	path.pop();
 	wander->addAction(gotoo, 25);
 
@@ -78,9 +79,10 @@ int main(int argc, char** argv)
 
 	while (Aria::getRunning && !gotoo->haveAchievedGoal() && !path.empty())
 	{
-		if (gotoo->haveAchievedGoal() && !path.empty())
+		if (gotoo->haveAchievedGoal())
 		{
 			gotoo->setGoal(path.front());
+
 			path.pop();
 		}
 
