@@ -68,7 +68,8 @@ int main(int argc, char** argv)
 	// turn avoid things further away
 	wander->addAction(new ArActionAvoidFront, 45);
 	// moving to the next point
-	ArActionGoto* gotoo = new ArActionGoto("Goto", path.front(), 20, 400);
+	std::cout << "Going to " << path.front().getX() << ";" << path.front().getY() << std::endl;
+	ArActionGoto* gotoo = new ArActionGoto("Goto", path.front(), 600, 400);
 
 	path.pop();
 	wander->addAction(gotoo, 25);
@@ -77,15 +78,22 @@ int main(int argc, char** argv)
 	robot.enableMotors();
 	robot.runAsync(true);
 
-	while (Aria::getRunning && !gotoo->haveAchievedGoal() && !path.empty())
+	while (Aria::getRunning && !path.empty())
 	{
 		if (gotoo->haveAchievedGoal())
 		{
+			std::cout << "Going to " << path.front().getX() << ";" << path.front().getY() << std::endl;
 			gotoo->setGoal(path.front());
 			path.pop();
 		}
-
 	}
+
 	while (!gotoo->haveAchievedGoal()) {}
+
+	std::cout << "Ending program : " << std::endl;
+	std::cout << "  - Aria::getRunning : " << Aria::getRunning << std::endl;
+	std::cout << "  - !gotoo->haveAchievedGoal() :" << !gotoo->haveAchievedGoal() << std::endl;
+	std::cout << "  - path.size() : " << path.size() << std::endl;
+
 	Aria::exit(0);
 }

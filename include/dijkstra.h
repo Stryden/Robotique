@@ -9,6 +9,6 @@
 # include <algorithm>
 # include "arry.h"
 
-unsigned int dijkstra(arry g, unsigned int start, unsigned int end, std::stack<unsigned int>& path);
+double dijkstra(arry g, unsigned int start, unsigned int end, std::stack<unsigned int>& path);
 
 #endif // DIJKSTRA_H_

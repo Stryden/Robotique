@@ -2,10 +2,10 @@
 
 #define NB_NODES 10 // Cannot be 0 or 1
 
-unsigned int dijkstra(arry g, unsigned int start, unsigned int end, std::stack<unsigned int>& path) {
+double dijkstra(arry g, unsigned int start, unsigned int end, std::stack<unsigned int>& path) {
 	unsigned int				nb_nodes = g.size();
 	
-	std::vector<unsigned int>	dist (nb_nodes, INT_MAX);
+	std::vector<double>			dist (nb_nodes, INT_MAX);
 	std::vector<int>			pred (nb_nodes, -1);
 	std::vector<unsigned int>	Q;
 
@@ -31,7 +31,7 @@ unsigned int dijkstra(arry g, unsigned int start, unsigned int end, std::stack<u
 		Q.erase(std::remove(Q.begin(), Q.end(), min), Q.end());
 
 		for (auto v : Q) {
-			if (g[min][v]) {
+			if (g[min][v] > 360000) { // here is a threshold
 				alt = dist[min] + g[min][v];
 				if (alt < dist[v]) {
 					dist[v] = alt;
@@ -41,13 +41,16 @@ unsigned int dijkstra(arry g, unsigned int start, unsigned int end, std::stack<u
 		}
 	}
 
+	std::cout << "Path is like this (reverse order) :" << std::endl;
 	n = end;
 	while (n != start && n != -1) {
+		if (pred[n] != -1)
+			std::cout << "  - " << pred[n] << " to " << n << " : " << g[pred[n]][n] << std::endl;
 		path.push(n);
 		n = pred[n];
 	}
 
-	return dist[end];
+	return (n == start) ? dist[end] : 0;
 }
 
 /*
