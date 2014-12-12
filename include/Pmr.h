@@ -1,15 +1,21 @@
-#include "Aria.h"
+#ifndef PMR_H_
+# define PMR_H_
 
-#include <cstdlib>
-#include <stack>
+# include "Aria.h"
+# include "dijkstra.h"
+# include "arry.h"
 
+# include <cstdlib>
+# include <stack>
+# include <queue>
 
-typedef std::vector<std::vector<int>> arry;
 class Pmr {
 public:
 	Pmr();
 	Pmr(ArMap* map, ArPose start, ArPose finish, int n);
 	~Pmr();
+
+	unsigned int getPath(std::queue<ArPose>& path);
 
 private:
 	ArMap* map_;
@@ -28,3 +34,5 @@ private:
 	arry get_graph();
 public:
 };
+
+#endif // PMR_H_

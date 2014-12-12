@@ -53,11 +53,11 @@ int main(int argc, char** argv)
 	printf("Compute graph...\n");
 	Pmr pmr = Pmr(&map, curPose, end, atoi(argv[4]));
 	//FIXME 
-	std::stack<ArPose> path;
-	//
+	std::queue<ArPose> path;
+	pmr.getPath(path);
 	printf("end\n");
 	
-	/* - the action group for wander actions: */
+	// - the action group for wander actions:
 	wander = new ArActionGroup(&robot);
 	// if we're stalled we want to back up and recover
 	wander->addAction(new ArActionStallRecover, 100);
@@ -68,7 +68,7 @@ int main(int argc, char** argv)
 	// turn avoid things further away
 	wander->addAction(new ArActionAvoidFront, 45);
 	// moving to the next point
-	ArActionGoto* gotoo = new ArActionGoto("Goto", path.top(), 20, 400);
+	ArActionGoto* gotoo = new ArActionGoto("Goto", path.front(), 20, 400);
 	path.pop();
 	wander->addAction(gotoo, 25);
 
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
 	{
 		if (gotoo->haveAchievedGoal() && !path.empty())
 		{
-			gotoo->setGoal(path.top());
+			gotoo->setGoal(path.front());
 			path.pop();
 		}
 

@@ -1,26 +1,21 @@
-#include <iostream>
-#include <stack>
-#include <ctime>
-#include <vector>
-#include <cstdlib>
-#include <algorithm>
+#include "dijkstra.h"
 
 #define NB_NODES 10 // Cannot be 0 or 1
 
-unsigned int dijkstra(unsigned int g[NB_NODES * NB_NODES], unsigned int start, unsigned int end, std::stack<unsigned int>& path) {
-	unsigned int	dist[NB_NODES];
-	int				pred[NB_NODES];
-	std::vector<unsigned int> Q;
+unsigned int dijkstra(arry g, unsigned int start, unsigned int end, std::stack<unsigned int>& path) {
+	unsigned int				nb_nodes = g.size();
+	
+	std::vector<unsigned int>	dist (nb_nodes, INT_MAX);
+	std::vector<int>			pred (nb_nodes, -1);
+	std::vector<unsigned int>	Q;
+
 	unsigned int	min_dist;
 	unsigned int	min;
 	unsigned int	alt;
 	unsigned int	n;
 
-	for (unsigned int i = 0; i < NB_NODES; ++i) {
-		dist[i] = INT_MAX;
-		pred[i] = -1;
+	for (unsigned int i = 0; i < nb_nodes; ++i)
 		Q.push_back(i);
-	}
 	dist[start] = 0;
 
 	while (!Q.empty()) {
@@ -36,8 +31,8 @@ unsigned int dijkstra(unsigned int g[NB_NODES * NB_NODES], unsigned int start, u
 		Q.erase(std::remove(Q.begin(), Q.end(), min), Q.end());
 
 		for (auto v : Q) {
-			if (g[min * NB_NODES + v]) {
-				alt = dist[min] + g[min * NB_NODES + v];
+			if (g[min][v]) {
+				alt = dist[min] + g[min][v];
 				if (alt < dist[v]) {
 					dist[v] = alt;
 					pred[v] = min;
@@ -55,19 +50,23 @@ unsigned int dijkstra(unsigned int g[NB_NODES * NB_NODES], unsigned int start, u
 	return dist[end];
 }
 
-
-int _tmain(int argc, _TCHAR* argv[])
+/*
+int main(int argc, char* argv[])
 {
-	/* Initialization of g */
-	unsigned int g[NB_NODES * NB_NODES] = { 0 };
+	unsigned int nb_nodes = 10;
+
+	// Initialization of g
+	std::vector<double> tmp(nb_nodes, 0);
+	arry g(nb_nodes, tmp);
+
 	std::srand(std::time(0));
-	for (unsigned int i = 0; i < 2 * NB_NODES; ++i) {
-		unsigned int val = std::rand() % 150;
-		g[std::rand() % (NB_NODES * NB_NODES)] = val;
+	for (unsigned int i = 0; i < 2 * nb_nodes; ++i) {
+		double val = std::rand() % 150 / 7;
+		g[std::rand() % nb_nodes][std::rand() % nb_nodes] = val;
 	}
 
 	std::stack<unsigned int> path;
-	unsigned int length = dijkstra(g, 0, NB_NODES - 1, path);
+	unsigned int length = dijkstra(g, 0, nb_nodes - 1, path);
 	unsigned int node;
 	std::cout << "Path found : " << std::endl;
 	while (path.size()) {
@@ -75,4 +74,4 @@ int _tmain(int argc, _TCHAR* argv[])
 		path.pop();
 	}
 	return 0;
-}
+}*/

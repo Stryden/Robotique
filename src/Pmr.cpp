@@ -8,7 +8,7 @@ Pmr::Pmr()
 Pmr::Pmr(ArMap* map, ArPose start, ArPose finish, int n)
 : map_(map), start_(start), finish_(finish), n_(n)
 {	
-	std::vector<int> tmp(n, 0);
+	std::vector<double> tmp(n, 0);
 	graph_ = arry(n, tmp);
 	
 	generate_graph();
@@ -19,6 +19,19 @@ Pmr::Pmr(ArMap* map, ArPose start, ArPose finish, int n)
 
 Pmr::~Pmr()
 {
+}
+
+unsigned int
+Pmr::getPath(std::queue<ArPose>& path) {
+	std::stack<unsigned int> idx;
+	unsigned int dist = dijkstra(graph_, 0, points_.size() - 1, idx);
+	
+	while (!idx.empty()) {
+		path.push(points_[idx.top()]);
+		idx.pop();
+	}
+	
+	return dist;
 }
 
 void
