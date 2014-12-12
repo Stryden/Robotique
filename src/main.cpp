@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 	
 	printf("Compute graph...\n");
 	Pmr pmr = Pmr(&map, curPose, end, atoi(argv[4]));
-	std::stack<int> path = pmr.get_path();
+	std::stack<double> path = pmr.get_path();
 	std::vector<ArPose> points = pmr.get_points();
 	printf("end\n");
 

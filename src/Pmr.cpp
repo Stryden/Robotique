@@ -8,7 +8,7 @@ Pmr::Pmr()
 Pmr::Pmr(ArMap* map, ArPose start, ArPose finish, int n)
 : map_(map), start_(start), finish_(finish), n_(n)
 {	
-	std::vector<int> tmp(n, 0);
+	std::vector<double> tmp(n, 0);
 	graph_ = arry(n, tmp);
 	
 	generate_graph();
@@ -85,7 +85,7 @@ Pmr::random_point(std::vector<ArLineSegment>* lines)
 	return point;
 }
 
-std::stack<int>
+std::stack<double>
 Pmr::get_path()
 {
 	return path_;
