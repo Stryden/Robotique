@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 	
 	printf("Compute graph...\n");
 	Pmr pmr = Pmr(&map, curPose, end, atoi(argv[4]));
-
+		
 	std::queue<ArPose> path;
 	pmr.getPath(path);
 	printf("end\n");
@@ -82,7 +82,6 @@ int main(int argc, char** argv)
 		if (gotoo->haveAchievedGoal())
 		{
 			gotoo->setGoal(path.front());
-
 			path.pop();
 		}
 
